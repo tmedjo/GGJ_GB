@@ -1,0 +1,34 @@
+PlaySound:
+    ld a, [rAUD1SWEEP]
+    and %10000000
+    jr nz, .EndSoundLoop
+    ld a, [soundToggle]
+    cp 0
+    jr z, .Rest
+    
+.Sound
+	ld a, 0
+    ld [soundToggle], a
+    ld a, %00110010
+    ld [rAUD1SWEEP], a
+    ld a, %10001001
+    ld [rAUD1LEN], a
+    ld a, %11110001
+    ld [rAUD1ENV], a
+    ld a, %00000010
+    ld [rAUD1LOW], a
+    ld a, %01000010
+    ld [rAUD1HIGH], a
+    xor a
+    jr z, .EndSoundLoop
+.Rest:
+	ld a, 1
+    ld [soundToggle], a
+    ld a, %10000000
+    ld [rAUD1LEN], a
+    ld a, %01101010
+    ld [rAUD1ENV], a
+    ld a, %00001010
+.EndSoundLoop
+	ret
+	
